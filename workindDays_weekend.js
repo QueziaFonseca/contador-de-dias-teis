@@ -22,13 +22,15 @@ async function businessDay(date) {
   const weekendsDays = getWeekendDays(endDate, days);
 
   const holidays = await countHolidays(startDate, endDate, endDate.getFullYear());
-
-  let businessDay = days - weekendsDays - holidays;
+  console.log('days', days)
+  console.log("weekendsDays", weekendsDays)
+  console.log('holidays',holidays)
+  let businessDay = Number(days) - Number(weekendsDays) - Number(holidays);
+  return businessDay;
 }
 
 function getDays(startDate, endDate) {
   const periodMileSeg = new Date(endDate - startDate); // diferença entre datas, em milisegundos
-
   return periodMileSeg / (1000 * 60 * 60 * 24); // numero de dias entre as datas
 }
 
@@ -54,6 +56,7 @@ function getWeekendDays(endDate, days) {
   }
 
   const weekendsDays = (semanasInteiras * 2) + weekendsLeft();
+  return weekendsDays;
 }
 
 async function getHolidays(year) {
@@ -68,7 +71,7 @@ async function getHolidays(year) {
 }
 
 async function countHolidays(startDate, endDate, year) {
-  await getHolidays(year).then(value => {
+  const result = getHolidays(year).then(value => {
     let holidaysCounter = 0;
    
     value.forEach((day) => {
@@ -85,9 +88,11 @@ async function countHolidays(startDate, endDate, year) {
         };
       }
     });
-    console.log('contador',holidaysCounter);
-    const resultado = holidaysCounter
+    // console.log('contador',holidaysCounter);
+  return holidaysCounter;  
+
   });
+  return result;
 }
 
 // console.log(countHolidays('2022-09-01', '2022-09-14', 2022));
@@ -95,7 +100,12 @@ async function countHolidays(startDate, endDate, year) {
 // getHolidays(2022).then(v => console.log(v));
 
 //  countHolidays('2022-01-01','2022-04-22', 2022).then(v => console.log(v));
- countHolidays('2022-01-01','2022-04-22', 2022);
-
+//  countHolidays('2022-01-01','2022-04-22', 2022);
+// getDays('2022-01-01','2022-04-22')
 // countHolidays('2022-01-01', '2022-04-22', [2022]);
+// countHolidays('2022-01-01','2022-04-22', 2022).then(v => console.log(v));
+// businessDay('2022-09-01')
+businessDay('2022-09-06').then(v => console.log(v));
+
+
 
